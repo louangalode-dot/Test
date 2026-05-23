@@ -2,7 +2,17 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+MOTS_DE_PASSE_COURANTS = [
+    "password", "123456", "123456789", "qwerty", "abc123",
+    "password1", "111111", "iloveyou", "admin", "welcome",
+    "monkey", "dragon", "master", "sunshine", "princess",
+    "azerty", "motdepasse", "soleil", "bonjour", "football"
+]
+
 def analyser_mdp(mdp):
+    if mdp.lower() in MOTS_DE_PASSE_COURANTS:
+        return {"niveau": "DANGEREUX", "conseils": ["Ce mot de passe est trop connu ! Il figure dans les listes de hackers.", "Choisis quelque chose d'unique et personnel."]}
+
     score = 0
     conseils = []
 
