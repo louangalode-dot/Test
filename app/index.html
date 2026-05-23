@@ -28,7 +28,7 @@
     <div class="card">
         <h1>🔐 Password Checker</h1>
         <p>Vérifie la force de ton mot de passe</p>
-        <input type="password" id="mdp" placeholder="Entre ton mot de passe...">
+        <input type="password" id="mdp" placeholder="Entre ton mot de passe..." oninput="verifier()">
         <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
         <button onclick="verifier()">Analyser</button>
         <div id="resultat"></div>
