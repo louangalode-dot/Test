@@ -5,40 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Checker</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; }
-        h1 { color: #333; }
-        input { width: 100%; padding: 10px; font-size: 16px; margin: 10px 0; }
-        button { background: #007bff; color: white; padding: 10px 20px; border: none; font-size: 16px; cursor: pointer; border-radius: 5px; }
-        #resultat { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; }
-        .FORT { background: #d4edda; color: #155724; }
-        .MOYEN { background: #fff3cd; color: #856404; }
-        .FAIBLE { background: #f8d7da; color: #721c24; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; min-height: 100vh; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); display: flex; align-items: center; justify-content: center; }
+        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; width: 90%; max-width: 480px; color: white; }
+        h1 { font-size: 28px; margin-bottom: 8px; }
+        p { color: rgba(255,255,255,0.6); margin-bottom: 30px; }
+        input { width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: white; font-size: 16px; outline: none; margin-bottom: 15px; }
+        input::placeholder { color: rgba(255,255,255,0.4); }
+        .strength-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
+        .strength-fill { height: 100%; border-radius: 3px; transition: all 0.4s ease; width: 0%; }
+        button { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; }
+        #resultat { margin-top: 20px; padding: 15px; border-radius: 10px; display: none; }
+        .FORT { background: rgba(39,174,96,0.2); border: 1px solid #27ae60; }
+        .MOYEN { background: rgba(241,196,15,0.2); border: 1px solid #f1c40f; }
+        .FAIBLE { background: rgba(231,76,60,0.2); border: 1px solid #e74c3c; }
+        .niveau { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
+        ul { padding-left: 20px; color: rgba(255,255,255,0.8); }
+        ul li { margin: 5px 0; }
     </style>
 </head>
 <body>
-    <h1>🔐 Password Checker</h1>
-    <p>Vérifie la force de ton mot de passe</p>
-    <input type="password" id="mdp" placeholder="Entre ton mot de passe...">
-    <button onclick="verifier()">Analyser</button>
-    <div id="resultat"></div>
+    <div class="card">
+        <h1>🔐 Password Checker</h1>
+        <p>Vérifie la force de ton mot de passe</p>
+        <input type="password" id="mdp" placeholder="Entre ton mot de passe...">
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+        <button onclick="verifier()">Analyser</button>
+        <div id="resultat"></div>
+    </div>
     <script>
         async function verifier() {
             const mdp = document.getElementById("mdp").value;
-            const response = await fetch("/analyser", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({mdp: mdp})
-            });
+            if (!mdp) return;
+            const response = await fetch("/analyser", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({mdp: mdp}) });
             const data = await response.json();
+            const fill = document.getElementById("strengthFill");
+            const colors = { FAIBLE: "#e74c3c", MOYEN: "#f1c40f", FORT: "#27ae60" };
+            const widths = { FAIBLE: "33%", MOYEN: "66%", FORT: "100%" };
+            fill.style.width = widths[data.niveau];
+            fill.style.background = colors[data.niveau];
             const div = document.getElementById("resultat");
             div.style.display = "block";
             div.className = data.niveau;
-            let html = "<strong>Niveau : " + data.niveau + "</strong>";
-            if (data.conseils.length > 0) {
-                html += "<ul>";
-                data.conseils.forEach(c => html += "<li>" + c + "</li>");
-                html += "</ul>";
-            }
+            let html = "<div class='niveau'>" + data.niveau + "</div>";
+            if (data.conseils.length > 0) { html += "<ul>"; data.conseils.forEach(c => html += "<li>" + c + "</li>"); html += "</ul>"; }
+            else { html += "<p>✅ Excellent mot de passe !</p>"; }
             div.innerHTML = html;
         }
     </script>
