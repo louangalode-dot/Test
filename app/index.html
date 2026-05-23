@@ -19,6 +19,8 @@
         .FORT { background: rgba(39,174,96,0.2); border: 1px solid #27ae60; }
         .MOYEN { background: rgba(241,196,15,0.2); border: 1px solid #f1c40f; }
         .FAIBLE { background: rgba(231,76,60,0.2); border: 1px solid #e74c3c; }
+        .DANGEREUX { background: rgba(150,0,0,0.3); border: 1px solid #ff0000; }
+        .EXCELLENT { background: rgba(0,200,100,0.2); border: 1px solid #00c864; }
         .niveau { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
         ul { padding-left: 20px; color: rgba(255,255,255,0.8); }
         ul li { margin: 5px 0; }
@@ -40,8 +42,8 @@
             const response = await fetch("/analyser", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({mdp: mdp}) });
             const data = await response.json();
             const fill = document.getElementById("strengthFill");
-            const colors = { FAIBLE: "#e74c3c", MOYEN: "#f1c40f", FORT: "#27ae60" };
-            const widths = { FAIBLE: "33%", MOYEN: "66%", FORT: "100%" };
+            const colors = { DANGEREUX: "#ff0000", FAIBLE: "#e74c3c", MOYEN: "#f1c40f", FORT: "#27ae60", EXCELLENT: "#00c864" };
+            const widths = { DANGEREUX: "10%", FAIBLE: "25%", MOYEN: "50%", FORT: "75%", EXCELLENT: "100%" };
             fill.style.width = widths[data.niveau];
             fill.style.background = colors[data.niveau];
             const div = document.getElementById("resultat");
