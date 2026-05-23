@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Checker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; }
+        h1 { color: #333; }
+        input { width: 100%; padding: 10px; font-size: 16px; margin: 10px 0; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; font-size: 16px; cursor: pointer; border-radius: 5px; }
+        #resultat { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; }
+        .FORT { background: #d4edda; color: #155724; }
+        .MOYEN { background: #fff3cd; color: #856404; }
+        .FAIBLE { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Password Checker</h1>
+    <p>Vérifie la force de ton mot de passe</p>
+    <input type="password" id="mdp" placeholder="Entre ton mot de passe...">
+    <button onclick="verifier()">Analyser</button>
+    <div id="resultat"></div>
+    <script>
+        async function verifier() {
+            const mdp = document.getElementById("mdp").value;
+            const response = await fetch("/analyser", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({mdp: mdp})
+            });
+            const data = await response.json();
+            const div = document.getElementById("resultat");
+            div.style.display = "block";
+            div.className = data.niveau;
+            let html = "<strong>Niveau : " + data.niveau + "</strong>";
+            if (data.conseils.length > 0) {
+                html += "<ul>";
+                data.conseils.forEach(c => html += "<li>" + c + "</li>");
+                html += "</ul>";
+            }
+            div.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
