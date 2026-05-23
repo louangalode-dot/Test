@@ -30,12 +30,34 @@
     <div class="card">
         <h1>🔐 Password Checker</h1>
         <p>Vérifie la force de ton mot de passe</p>
-        <input type="password" id="mdp" placeholder="Entre ton mot de passe..." oninput="verifier()">
+        <div style="position:relative;">
+            <input type="password" id="mdp" placeholder="Entre ton mot de passe..." oninput="verifier()" style="padding-right:50px;">
+            <span onclick="toggleVue()" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;" id="eyeIcon">👁</span>
+        </div>
         <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
         <button onclick="verifier()">Analyser</button>
+        <button onclick="copierMdp()" style="margin-top:10px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);">📋 Copier le mot de passe</button>
         <div id="resultat"></div>
     </div>
     <script>
+        function toggleVue() {
+            const input = document.getElementById("mdp");
+            const icon = document.getElementById("eyeIcon");
+            if (input.type === "password") {
+                input.type = "text";
+                icon.textContent = "🙈";
+            } else {
+                input.type = "password";
+                icon.textContent = "👁";
+            }
+        }
+        function copierMdp() {
+            const mdp = document.getElementById("mdp").value;
+            if (!mdp) return;
+            navigator.clipboard.writeText(mdp).then(() => {
+                alert("✅ Mot de passe copié !");
+            });
+        }
         async function verifier() {
             const mdp = document.getElementById("mdp").value;
             if (!mdp) return;
