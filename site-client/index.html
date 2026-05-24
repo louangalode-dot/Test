@@ -344,6 +344,53 @@
             transition: all 0.2s;
         }
         .lang-toggle:hover { border-color: #0066FF; color: #0066FF; }
+
+        /* HAMBURGER MOBILE */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: none;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background: #111;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            width: 100%;
+            background: rgba(247,247,245,0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #E8E8E4;
+            padding: 24px 24px;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            color: #111;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 8px 0;
+            border-bottom: 1px solid #E8E8E4;
+        }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover { color: #0066FF; }
         /* RESPONSIVE */
         @media (max-width: 900px) {
             * { cursor: auto; }
@@ -359,6 +406,8 @@
             .contact-section { padding: 60px 24px; }
             .cards { grid-template-columns: 1fr; }
             .projet-cards { grid-template-columns: 1fr; }
+            .hamburger { display: flex; }
+            nav ul { display: none; }
         }
     </style>
 </head>
@@ -376,7 +425,18 @@
 <li><a href="#contact" class="nav-cta" id="navContact">Me contacter</a></li>
 <li><button type="button" class="lang-toggle" id="langToggle">🌐 EN</button></li>
         </ul>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" onclick="toggleMenu()">À propos</a>
+        <a href="#services" onclick="toggleMenu()">Services</a>
+        <a href="#projets" onclick="toggleMenu()">Projets</a>
+        <a href="#contact" onclick="toggleMenu()">Me contacter</a>
+    </div>
 
     
     <div class="hero-wrapper">
@@ -1025,6 +1085,14 @@
             }
             applyTranslations();
         });
+
+        // HAMBURGER MENU
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+        }
     </script>
     
     <!-- BOUTON WHATSAPP FLOTTANT -->
