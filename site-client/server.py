@@ -28,14 +28,14 @@ def index():
 def admin():
     if not session.get('logged_in'):
         return redirect('/login')
-    return render_template('admin.html')
+    return redirect('/')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         if request.json.get('password') == ADMIN_PASSWORD:
             session['logged_in'] = True
-            return jsonify({'success': True})
+            return jsonify({'success': True, 'redirect': '/'})
         return jsonify({'success': False})
     return render_template('login.html')
 

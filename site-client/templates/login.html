@@ -39,7 +39,7 @@
             });
             const data = await res.json();
             if (data.success) {
-                window.location.href = '/admin';
+                window.location.href = data.redirect || '/';
             } else {
                 document.getElementById('error').style.display = 'block';
             }
