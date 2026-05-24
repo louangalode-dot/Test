@@ -44,6 +44,11 @@ def logout():
     session.pop('logged_in', None)
     return redirect('/login')
 
+
+@app.route('/api/is-admin')
+def is_admin():
+    return jsonify({'admin': session.get('logged_in', False)})
+
 @app.route('/api/content', methods=['GET'])
 def get_content():
     return jsonify(load_content())

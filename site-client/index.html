@@ -412,6 +412,16 @@
     </style>
 </head>
 <body>
+    <!-- BARRE ADMIN -->
+    <div id="adminBar" style="display:none;position:fixed;top:0;left:0;width:100%;background:#111;color:white;padding:12px 24px;justify-content:space-between;align-items:center;z-index:99999;">
+        <span style="font-size:13px;font-weight:700;letter-spacing:2px;">COMMIT <span style="color:#0066FF;">& GO</span> — MODE ADMIN</span>
+        <div style="display:flex;gap:12px;">
+            <button onclick="toggleEdit()" id="editBtn" style="background:#0066FF;color:white;border:none;padding:8px 20px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;">✏️ Activer édition</button>
+            <button onclick="saveAll()" style="background:#22c55e;color:white;border:none;padding:8px 20px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;">💾 Sauvegarder</button>
+            <a href="/logout" style="background:#333;color:white;padding:8px 20px;border-radius:100px;font-size:13px;font-weight:600;text-decoration:none;">Déconnexion</a>
+        </div>
+    </div>
+
 
     <div class="cursor" id="cursor"></div>
     <div class="cursor-follower" id="follower"></div>
@@ -1133,5 +1143,52 @@
             <button class="cookie-accept" onclick="acceptCookies()">Accepter</button>
         </div>
     </div>
+
+    <script>
+        // ADMIN INLINE
+        let editMode = false;
+        const editableIds = ['heroTitle', 'heroDesc', 'heroLocation', 'aboutP1', 'aboutP2', 'aboutP3', 'contactDesc'];
+
+        async function checkAdmin() {
+            const res = await fetch('/api/is-admin');
+            const data = await res.json();
+            if (data.admin) {
+                document.getElementById('adminBar').style.display = 'flex';
+                document.body.style.paddingTop = '52px';
+            }
+        }
+
+        function toggleEdit() {
+            editMode = !editMode;
+            const btn = document.getElementById('editBtn');
+            editableIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.contentEditable = editMode;
+                    el.style.outline = editMode ? '2px dashed #0066FF' : 'none';
+                    el.style.borderRadius = editMode ? '4px' : '0';
+                    el.style.padding = editMode ? '4px' : '0';
+                }
+            });
+            btn.textContent = editMode ? '✅ Mode édition ON' : '✏️ Activer édition';
+            btn.style.background = editMode ? '#22c55e' : '#0066FF';
+        }
+
+        async function saveAll() {
+            const data = {};
+            editableIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) data[id] = el.innerHTML;
+            });
+            await fetch('/api/content', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            alert('✅ Modifications sauvegardées !');
+        }
+
+        checkAdmin();
+    </script>
 </body>
 </html>
