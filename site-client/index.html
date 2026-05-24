@@ -4,362 +4,448 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexora — Développement Web & Applications</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { font-family: 'Segoe UI', sans-serif; color: #333; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: #F7F7F5; color: #111; }
 
-        /* NAVIGATION */
-        nav {
+        /* CURSEUR CUSTOM */
+        .cursor {
+            width: 12px; height: 12px;
+            background: #0066FF;
+            border-radius: 50%;
             position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 10, 30, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 20px 40px;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease;
+        }
+        .cursor-follower {
+            width: 36px; height: 36px;
+            border: 1.5px solid #0066FF;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.12s ease;
+            opacity: 0.5;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(247,247,245,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #E8E8E4;
+            padding: 0 60px;
+            height: 64px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
         }
-        .logo { color: white; font-size: 24px; font-weight: bold; letter-spacing: 2px; }
-        .logo span { color: #667eea; }
-        nav ul { list-style: none; display: flex; gap: 30px; }
-        nav ul a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s; }
-        nav ul a:hover { color: #667eea; }
+        .logo { font-size: 18px; font-weight: 900; letter-spacing: 3px; color: #111; }
+        .logo span { color: #0066FF; }
+        nav ul { list-style: none; display: flex; gap: 36px; align-items: center; }
+        nav ul a { color: #666; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+        nav ul a:hover { color: #111; }
+        .nav-cta {
+            background: #111 !important;
+            color: white !important;
+            padding: 10px 22px;
+            border-radius: 100px;
+        }
+        .nav-cta:hover { background: #0066FF !important; }
 
         /* HERO */
-        .hero { position: relative; overflow: hidden; 
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0a0a1e 0%, #1a1a3e 50%, #0f0f2e 100%);
+        .hero-wrapper { background: #F7F7F5; padding-top: 64px; }
+        .hero {
+            min-height: calc(100vh - 64px);
+            padding: 80px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid #E8E8E4;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+        .hero-tag .dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .hero h1 {
+            font-size: 68px;
+            font-weight: 900;
+            line-height: 1.0;
+            letter-spacing: -3px;
+            color: #111;
+            margin-bottom: 24px;
+        }
+        .hero h1 em { font-style: normal; color: #0066FF; }
+        .hero-desc {
+            font-size: 17px;
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            max-width: 460px;
+        }
+        .hero-location {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 40px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 100px 20px;
+            gap: 6px;
         }
-        .hero-content { max-width: 800px; }
-        .hero-badge {
-            display: inline-block;
-            background: rgba(102,126,234,0.2);
-            border: 1px solid #667eea;
-            color: #667eea;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            margin-bottom: 30px;
+        .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn-dark {
+            background: #111; color: white;
+            padding: 14px 28px; border-radius: 100px;
+            text-decoration: none; font-weight: 600; font-size: 15px;
+            transition: all 0.2s; border: none; cursor: none;
         }
-        .hero h1 {
-            font-size: 56px;
-            color: white;
-            line-height: 1.2;
-            margin-bottom: 20px;
+        .btn-dark:hover { background: #0066FF; }
+        .btn-light {
+            background: white; color: #111;
+            padding: 14px 28px; border-radius: 100px;
+            text-decoration: none; font-weight: 600; font-size: 15px;
+            border: 1px solid #E8E8E4; transition: all 0.2s;
         }
-        .hero h1 span { color: #667eea; }
-        .hero p {
-            font-size: 20px;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-        .hero-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 15px 35px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.3s;
-        }
-        .btn-primary:hover { transform: translateY(-3px); }
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            padding: 15px 35px;
-            border-radius: 30px;
-            text-decoration: none;
-            border: 1px solid rgba(255,255,255,0.3);
+        .btn-light:hover { border-color: #111; }
+
+        /* BENTO GRID */
+        .hero-right { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .bento {
+            background: white; border: 1px solid #E8E8E4;
+            border-radius: 20px; padding: 28px;
             transition: all 0.3s;
         }
-        .btn-secondary:hover { border-color: #667eea; color: #667eea; }
+        .bento:hover { border-color: #0066FF; box-shadow: 0 0 0 4px rgba(0,102,255,0.06); }
+        .bento-wide { grid-column: span 2; }
+        .bento-icon { font-size: 28px; margin-bottom: 12px; }
+        .bento h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+        .bento p { font-size: 13px; color: #888; line-height: 1.5; }
+        .bento-stat { font-size: 44px; font-weight: 900; color: #0066FF; letter-spacing: -2px; }
+        .bento-stat-label { font-size: 12px; color: #888; margin-top: 4px; font-weight: 500; }
+        .counter { display: inline-block; }
+
+        /* ABOUT */
+        .about-wrapper { background: white; border-top: 1px solid #E8E8E4; border-bottom: 1px solid #E8E8E4; }
+        .about { max-width: 1200px; margin: 0 auto; padding: 80px 60px; display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: center; }
+        .about-label { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #0066FF; margin-bottom: 16px; }
+        .about-title { font-size: 40px; font-weight: 900; letter-spacing: -2px; line-height: 1.1; }
+        .about-right p { font-size: 17px; color: #555; line-height: 1.8; margin-bottom: 16px; }
+        .about-right p strong { color: #111; font-weight: 700; }
+        .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+        .tag {
+            background: #F7F7F5; border: 1px solid #E8E8E4;
+            padding: 8px 16px; border-radius: 100px;
+            font-size: 13px; font-weight: 500; color: #555;
+        }
 
         /* SERVICES */
-        .services {
-            padding: 100px 40px;
-            background: #f8f9fa;
-            text-align: center;
-        }
-        .section-badge {
-            color: #667eea;
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 14px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .services h2 { font-size: 40px; margin-bottom: 15px; }
-        .services p { color: #666; margin-bottom: 60px; font-size: 18px; }
-        .cards { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+        .services-wrapper { background: #F7F7F5; }
+        .section { max-width: 1200px; margin: 0 auto; padding: 100px 60px; }
+        .section-label { font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #0066FF; margin-bottom: 16px; }
+        .section-title { font-size: 44px; font-weight: 900; letter-spacing: -2px; line-height: 1.1; margin-bottom: 48px; }
+        .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px 30px;
-            width: 300px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
-            text-align: left;
+            background: white; border: 1px solid #E8E8E4;
+            border-radius: 20px; padding: 36px;
+            transition: all 0.3s;
         }
-        .card:hover { transform: translateY(-10px); }
-        .card-icon { font-size: 40px; margin-bottom: 20px; }
-        .card h3 { font-size: 22px; margin-bottom: 10px; }
-        .card p { color: #666; line-height: 1.6; }
+        .card:hover { border-color: #0066FF; transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,102,255,0.08); }
+        .card-icon { font-size: 28px; margin-bottom: 20px; }
+        .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        .card p { color: #666; font-size: 14px; line-height: 1.6; }
+        .card-price { margin-top: 20px; padding-top: 20px; border-top: 1px solid #f0f0f0; font-size: 13px; color: #0066FF; font-weight: 600; }
 
         /* PROJETS */
-        .projets {
-            padding: 100px 40px;
-            background: white;
-            text-align: center;
-        }
-        .projets h2 { font-size: 40px; margin-bottom: 15px; }
-        .projets > p { color: #666; margin-bottom: 60px; font-size: 18px; }
-        .projet-cards { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+        .projets-wrapper { background: #111; }
+        .projets-section { max-width: 1200px; margin: 0 auto; padding: 100px 60px; }
+        .projets-section .section-label { color: #0066FF; }
+        .projets-section .section-title { color: white; }
+        .projet-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
         .projet-card {
-            background: linear-gradient(135deg, #1a1a3e, #0f0f2e);
-            border-radius: 20px;
-            padding: 40px;
-            width: 340px;
-            color: white;
-            text-align: left;
+            background: #1a1a1a; border: 1px solid #2a2a2a;
+            border-radius: 20px; padding: 36px;
+            transition: all 0.3s;
         }
+        .projet-card:hover { border-color: #0066FF; }
         .projet-tag {
-            background: rgba(102,126,234,0.3);
-            color: #667eea;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: inline-block;
-            margin-bottom: 20px;
+            background: rgba(0,102,255,0.15); color: #0066FF;
+            padding: 4px 12px; border-radius: 100px;
+            font-size: 12px; font-weight: 600;
+            display: inline-block; margin-bottom: 20px;
         }
-        .projet-card h3 { font-size: 22px; margin-bottom: 10px; }
-        .projet-card p { color: rgba(255,255,255,0.7); margin-bottom: 20px; line-height: 1.6; }
-        .projet-link {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: bold;
+        .projet-card h3 { font-size: 22px; font-weight: 700; color: white; margin-bottom: 10px; }
+        .projet-card p { color: #888; line-height: 1.6; margin-bottom: 24px; font-size: 14px; }
+        .projet-link { color: #0066FF; text-decoration: none; font-weight: 600; font-size: 14px; }
+        .projet-link:hover { text-decoration: underline; }
+        .projet-coming {
+            background: #1a1a1a; border: 1px dashed #333;
+            border-radius: 20px; padding: 36px;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 12px; text-align: center;
         }
+        .projet-coming p { color: #555; font-size: 14px; }
+        .projet-coming span { font-size: 32px; }
 
         /* CONTACT */
-        .contact {
-            padding: 100px 40px;
-            background: linear-gradient(135deg, #0a0a1e, #1a1a3e);
-            text-align: center;
-            color: white;
+        .contact-wrapper { background: #F7F7F5; }
+        .contact-section { max-width: 680px; margin: 0 auto; padding: 100px 60px; text-align: center; }
+        .contact-section .section-title { font-size: 52px; margin-bottom: 16px; }
+        .contact-section > p { color: #666; font-size: 17px; margin-bottom: 48px; line-height: 1.6; }
+        .contact-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+        .contact-form input, .contact-form textarea {
+            padding: 14px 18px;
+            border: 1px solid #E8E8E4;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            background: white;
         }
-        .contact h2 { font-size: 40px; margin-bottom: 15px; }
-        .contact p { color: rgba(255,255,255,0.7); margin-bottom: 40px; font-size: 18px; }
-        .contact-form {
-            max-width: 500px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: #0066FF;
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
         }
-        .contact-form input,
-        .contact-form textarea {
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.05);
-            color: white;
-            font-size: 16px;
-        }
-        .contact-form textarea { height: 120px; resize: none; }
-        .contact-form input::placeholder,
-        .contact-form textarea::placeholder { color: rgba(255,255,255,0.4); }
+        .contact-form textarea { height: 130px; resize: none; }
+        .contact-note { font-size: 13px; color: #999; text-align: center; margin-top: 8px; }
 
         /* FOOTER */
         footer {
-            background: #050510;
-            color: rgba(255,255,255,0.5);
-            text-align: center;
-            padding: 30px;
+            background: #111; color: #555;
+            text-align: center; padding: 32px 60px;
+            font-size: 13px; border-top: 1px solid #222;
         }
-        footer span { color: #667eea; font-weight: bold; }
+        footer span { color: #0066FF; }
 
         /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 36px; }
-            nav ul { display: none; }
-            .cards, .projet-cards { flex-direction: column; align-items: center; }
+        @media (max-width: 900px) {
+            * { cursor: auto; }
+            .cursor, .cursor-follower { display: none; }
+            nav { padding: 0 24px; }
+            nav ul li:not(:last-child) { display: none; }
+            .hero { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+            .hero h1 { font-size: 44px; letter-spacing: -2px; }
+            .hero-right { display: none; }
+            .about { grid-template-columns: 1fr; padding: 60px 24px; gap: 32px; }
+            .section { padding: 60px 24px; }
+            .projets-section { padding: 60px 24px; }
+            .contact-section { padding: 60px 24px; }
+            .cards { grid-template-columns: 1fr; }
+            .projet-cards { grid-template-columns: 1fr; }
         }
     </style>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="follower"></div>
 
     <nav>
         <div class="logo">NEX<span>ORA</span></div>
         <ul>
+            <li><a href="#about">À propos</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#projets">Projets</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact" class="nav-cta">Me contacter</a></li>
         </ul>
     </nav>
 
+    <div class="hero-wrapper">
     <section class="hero">
-        <canvas id="particles"></canvas>
-    <div class="hero-content" style="position:relative;z-index:2;" data-aos="fade-up" data-aos-delay="200">
-            <div class="hero-badge">✨ Développeur Web & Applications</div>
-            <h1>Je transforme vos idées en <span id="typed"></span></h1>
-            <p>Sites web modernes, applications sur mesure et solutions digitales pour propulser votre business.</p>
+        <div class="hero-left" data-aos="fade-right">
+            <div class="hero-tag"><span class="dot"></span> Disponible pour de nouveaux projets</div>
+            <h1>Je code vos <em>idées</em> en réalité</h1>
+            <p class="hero-desc">Web dev européen, passionné par les interfaces modernes et l'aide à la visibilité digitale de mes clients.</p>
+            <p class="hero-location">📍 Bruxelles, Belgique — disponible partout dans le monde</p>
             <div class="hero-btns">
-                <a href="#projets" class="btn-primary">Voir mes projets</a>
-                <a href="#contact" class="btn-secondary">Me contacter</a>
+                <a href="#projets" class="btn-dark">Voir mes projets</a>
+                <a href="#contact" class="btn-light">Me contacter</a>
+            </div>
+        </div>
+        <div class="hero-right" data-aos="fade-left" data-aos-delay="200">
+            <div class="bento bento-wide">
+                <div class="bento-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/></svg></div>
+                <h3>Livraison rapide & propre</h3>
+                <p>Sites livrés en 2 à 4 semaines. Code propre, documenté et facile à faire évoluer.</p>
+            </div>
+            <div class="bento">
+                <div class="bento-stat"><span class="counter" data-target="90">0</span>+</div>
+                <div class="bento-stat-label">Score Lighthouse</div>
+            </div>
+            <div class="bento">
+                <div class="bento-stat"><span class="counter" data-target="2">0</span>-<span class="counter" data-target="4">0</span></div>
+                <div class="bento-stat-label">Semaines de livraison</div>
+            </div>
+            <div class="bento">
+                <div class="bento-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                <h3>Sécurisé by design</h3>
+                <p>Aucune donnée exposée, code audité avant livraison</p>
+            </div>
+            <div class="bento">
+                <div class="bento-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                <h3>100% Responsive</h3>
+                <p>Parfait sur mobile, tablette et desktop</p>
             </div>
         </div>
     </section>
+    </div>
 
-    <section class="services" id="services">
-        <div class="section-badge">CE QUE JE FAIS</div>
-        <h2>Mes Services</h2>
-        <p>Des solutions digitales adaptées à vos besoins</p>
-        <div class="cards" data-aos="fade-up">
+    <div class="about-wrapper">
+    <section class="about" id="about">
+        <div data-aos="fade-right">
+            <div class="about-label">À propos</div>
+            <div class="about-title">Qui suis-je ?</div>
+        </div>
+        <div class="about-right" data-aos="fade-left" data-aos-delay="100">
+            <p>Je m'appelle <strong>Louan</strong>, web developer basé à <strong>Bruxelles</strong>. Je conçois des sites web et applications modernes qui aident mes clients à exister et rayonner en ligne.</p>
+            <p>Ce qui me différencie ? Je ne livre pas juste un site — je construis un <strong>outil digital qui travaille pour vous</strong>. Chaque projet est pensé pour être rapide, visible sur Google, et facile à utiliser.</p>
+            <p>Disponible pour des projets partout dans le monde. <strong>Tarifs de lancement disponibles</strong> pour mes premiers clients.</p>
+            <div class="about-tags">
+                <span class="tag">HTML · CSS · JS</span>
+                <span class="tag">Python · Flask</span>
+                <span class="tag">Design UI/UX</span>
+                <span class="tag">SEO</span>
+                <span class="tag">Bruxelles 🇧🇪</span>
+                <span class="tag">Remote 🌍</span>
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <div class="services-wrapper">
+    <section class="section" id="services">
+        <div data-aos="fade-up">
+            <div class="section-label">Ce que je fais</div>
+            <div class="section-title">Mes Services</div>
+        </div>
+        <div class="cards" data-aos="fade-up" data-aos-delay="100">
             <div class="card">
-                <div class="card-icon">🌐</div>
+                <div class="card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
                 <h3>Sites Web</h3>
-                <p>Création de sites vitrines modernes, rapides et optimisés pour tous les écrans.</p>
+                <p>Création de sites vitrines modernes, rapides et optimisés pour tous les écrans. Design soigné, code propre.</p>
+                <div class="card-price">→ Tarif de lancement disponible</div>
             </div>
             <div class="card">
-                <div class="card-icon">⚡</div>
+                <div class="card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
                 <h3>Web Apps</h3>
-                <p>Applications web sur mesure pour automatiser et digitaliser vos processus.</p>
+                <p>Applications web sur mesure pour automatiser et digitaliser vos processus métier. Livrées clé en main.</p>
+                <div class="card-price">→ Sur devis selon complexité</div>
             </div>
             <div class="card">
-                <div class="card-icon">📈</div>
+                <div class="card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
                 <h3>SEO & Performance</h3>
-                <p>Site rapide, optimisé pour Google et livré avec un score Lighthouse > 90/100.</p>
+                <p>Site optimisé pour Google dès la conception. Score Lighthouse supérieur à 90/100 garanti à la livraison.</p>
+                <div class="card-price">→ Inclus dans chaque projet</div>
             </div>
         </div>
     </section>
+    </div>
 
-    <section class="projets" id="projets">
-        <div class="section-badge">MES RÉALISATIONS</div>
-        <h2>Projets récents</h2>
-        <p>Des projets concrets qui démontrent mon expertise</p>
-        <div class="projet-cards" data-aos="fade-up">
+    <div class="projets-wrapper">
+    <section class="projets-section" id="projets">
+        <div data-aos="fade-up">
+            <div class="section-label">Mes réalisations</div>
+            <div class="section-title">Projets récents</div>
+        </div>
+        <div class="projet-cards" style="margin-top:48px;" data-aos="fade-up" data-aos-delay="100">
             <div class="projet-card">
                 <span class="projet-tag">Python · Flask · Web</span>
                 <h3>Password Checker</h3>
-                <p>Application web de cybersécurité qui analyse la force des mots de passe en temps réel.</p>
+                <p>Application web qui analyse la force des mots de passe en temps réel avec un système de scoring avancé.</p>
                 <a href="https://password-checker-lgal.onrender.com" class="projet-link" target="_blank">Voir le projet →</a>
             </div>
-            <div class="projet-card">
-                <span class="projet-tag">HTML · CSS · JS</span>
-                <h3>Site Vitrine</h3>
-                <p>Site professionnel responsive avec design moderne et animations fluides.</p>
-                <a href="#" class="projet-link">En cours →</a>
+            <div class="projet-coming">
+                <span>🚧</span>
+                <h3 style="color:#555;font-size:18px;font-weight:700;">Projets en cours</h3>
+                <p>Nouveaux projets à venir — <span style="color:#0066FF;">tarifs de lancement disponibles</span></p>
             </div>
         </div>
     </section>
+    </div>
 
-    <section class="contact" id="contact">
-        <div class="section-badge">TRAVAILLONS ENSEMBLE</div>
-        <h2>Contactez-moi</h2>
-        <p>Un projet en tête ? Parlons-en !</p>
+    <div class="contact-wrapper">
+    <section class="contact-section" id="contact" data-aos="fade-up">
+        <div class="section-label">Travaillons ensemble</div>
+        <div class="section-title">Parlons de votre projet</div>
+        <p>Une idée ? Un besoin digital ? Envoyez-moi un message et je vous réponds sous 24h.</p>
         <form class="contact-form" action="https://formspree.io/f/VOTRE_ID" method="POST">
             <input type="text" name="nom" placeholder="Votre nom" required>
             <input type="email" name="email" placeholder="Votre email" required>
-            <textarea name="message" placeholder="Votre message"></textarea>
-            <button type="submit" class="btn-primary">Envoyer le message</button>
+            <textarea name="message" placeholder="Décrivez votre projet..."></textarea>
+            <button type="submit" class="btn-dark" style="border:none;cursor:none;padding:16px;font-family:Inter,sans-serif;">Envoyer le message</button>
         </form>
+        <p class="contact-note">Je réponds sous 24h · Devis gratuit · Sans engagement</p>
     </section>
+    </div>
 
     <footer>
-        <p>© 2026 <span>Nexora</span> — Tous droits réservés</p>
+        <p>© 2026 <span>Nexora</span> · Bruxelles, Belgique · Disponible partout dans le monde</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init({ duration: 800, once: true });
+    <script>
+        AOS.init({ duration: 700, once: true });
 
-        // PARTICULES
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        canvas.style.position = 'absolute';
-        canvas.style.top = '0';
-        canvas.style.left = '0';
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
+        // CURSEUR CUSTOM
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('follower');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX - 6 + 'px';
+            cursor.style.top = e.clientY - 6 + 'px';
+            setTimeout(() => {
+                follower.style.left = e.clientX - 18 + 'px';
+                follower.style.top = e.clientY - 18 + 'px';
+            }, 80);
+        });
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
+            el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+        });
 
-        let particles = [];
-        function resize() {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        for (let i = 0; i < 80; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                r: Math.random() * 2 + 1
+        // COMPTEURS ANIMÉS
+        const counters = document.querySelectorAll('.counter');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.dataset.target);
+                    let count = 0;
+                    const step = target / 40;
+                    const timer = setInterval(() => {
+                        count += step;
+                        if (count >= target) { count = target; clearInterval(timer); }
+                        entry.target.textContent = Math.floor(count);
+                    }, 30);
+                    observer.unobserve(entry.target);
+                }
             });
-        }
+        });
+        counters.forEach(c => observer.observe(c));
 
-        function drawParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(102,126,234,0.5)';
-                ctx.fill();
-                p.x += p.vx;
-                p.y += p.vy;
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            });
-            requestAnimationFrame(drawParticles);
-        }
-        drawParticles();
-
-        // EFFET DE FRAPPE
-        const words = ['expériences digitales', 'sites web modernes', 'web applications', 'votre vision'];
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        const typedEl = document.getElementById('typed');
-
-        function type() {
-            const word = words[wordIndex];
-            if (isDeleting) {
-                typedEl.textContent = word.substring(0, charIndex--);
-            } else {
-                typedEl.textContent = word.substring(0, charIndex++);
-            }
-            typedEl.style.color = '#667eea';
-            typedEl.style.borderRight = '3px solid #667eea';
-
-            if (!isDeleting && charIndex === word.length + 1) {
-                setTimeout(() => isDeleting = true, 1500);
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;
-            }
-            setTimeout(type, isDeleting ? 50 : 100);
-        }
-        type();
-
-        // NAV ACTIVE AU SCROLL
+        // NAV ACTIVE
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.style.background = 'rgba(10,10,30,0.98)';
+            if (window.scrollY > 20) {
+                nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
             } else {
-                nav.style.background = 'rgba(10,10,30,0.95)';
+                nav.style.boxShadow = 'none';
             }
-        });</script>
+        });
+    </script>
 </body>
 </html>
