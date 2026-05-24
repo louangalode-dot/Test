@@ -233,6 +233,23 @@
         }
         footer span { color: #0066FF; }
 
+
+        /* FAQ */
+        .faq-wrapper { background: #F7F7F5; border-top: 1px solid #E8E8E4; }
+        .faq-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+        .faq-list { display: flex; flex-direction: column; gap: 12px; }
+        .faq-item { background: white; border: 1px solid #E8E8E4; border-radius: 16px; overflow: hidden; transition: border-color 0.2s; }
+        .faq-item.open { border-color: #0066FF; }
+        .faq-question { width: 100%; background: none; border: none; padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; color: #111; text-align: left; cursor: none; }
+        .faq-question:hover { color: #0066FF; }
+        .faq-icon { width: 28px; height: 28px; background: #F7F7F5; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s; }
+        .faq-item.open .faq-icon { background: #0066FF; }
+        .faq-icon svg { transition: transform 0.3s; }
+        .faq-item.open .faq-icon svg { transform: rotate(45deg); }
+        .faq-item.open .faq-icon svg path { stroke: white; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; padding: 0 24px; }
+        .faq-answer-inner { padding-bottom: 20px; font-size: 14px; color: #666; line-height: 1.7; border-top: 1px solid #F0F0EC; padding-top: 16px; }
+        .faq-item.open .faq-answer { max-height: 300px; }
         /* RESPONSIVE */
         @media (max-width: 900px) {
             * { cursor: auto; }
@@ -414,6 +431,41 @@
     </section>
     </div>
 
+    <div class="faq-wrapper">
+    <section class="section" id="faq">
+        <div class="faq-grid">
+            <div data-aos="fade-right">
+                <div class="section-label">Questions fréquentes</div>
+                <div class="section-title">FAQ</div>
+                <p style="color:#888;font-size:15px;line-height:1.7;margin-top:16px;">Pas de réponse ici ?<br>Écrivez-moi directement.</p>
+                <a href="#contact" class="btn-dark" style="display:inline-block;margin-top:24px;text-decoration:none;">Me contacter</a>
+            </div>
+            <div class="faq-list" data-aos="fade-left" data-aos-delay="100">
+                <div class="faq-item open">
+                    <button class="faq-question">Combien coûte un site web ?<div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></div></button>
+                    <div class="faq-answer"><div class="faq-answer-inner">Les tarifs varient selon la complexité. Je propose des <strong>tarifs de lancement attractifs</strong> pour mes premiers clients. Devis gratuit sous 24h.</div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Combien de temps pour livrer mon site ?<div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></div></button>
+                    <div class="faq-answer"><div class="faq-answer-inner">Un site vitrine est livré en <strong>2 à 4 semaines</strong>. Je vous tiens informé à chaque étape.</div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Vous travaillez à distance ?<div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></div></button>
+                    <div class="faq-answer"><div class="faq-answer-inner">Oui, <strong>100% à distance</strong>, partout dans le monde. Par appel vidéo, email ou WhatsApp.</div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Mon site sera-t-il visible sur Google ?<div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></div></button>
+                    <div class="faq-answer"><div class="faq-answer-inner">Le <strong>SEO est inclus dans chaque projet</strong>. Score Lighthouse supérieur à 90/100 garanti.</div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Que se passe-t-il après la livraison ?<div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></div></button>
+                    <div class="faq-answer"><div class="faq-answer-inner">Je vous forme à la gestion de base et reste <strong>disponible pour toute question</strong>. Forfaits maintenance disponibles.</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+
     <div class="contact-wrapper">
     <section class="contact-section" id="contact" data-aos="fade-up">
         <div class="section-label">Travaillons ensemble</div>
@@ -480,6 +532,16 @@
             } else {
                 nav.style.boxShadow = 'none';
             }
+        });
+
+        // FAQ ACCORDEON
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            });
         });
     </script>
     <!-- BOUTON WHATSAPP FLOTTANT -->
