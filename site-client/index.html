@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexora — Développement Web & Applications</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { font-family: 'Segoe UI', sans-serif; color: #333; }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 30, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo { color: white; font-size: 24px; font-weight: bold; letter-spacing: 2px; }
+        .logo span { color: #667eea; }
+        nav ul { list-style: none; display: flex; gap: 30px; }
+        nav ul a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s; }
+        nav ul a:hover { color: #667eea; }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a1e 0%, #1a1a3e 50%, #0f0f2e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 20px;
+        }
+        .hero-content { max-width: 800px; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(102,126,234,0.2);
+            border: 1px solid #667eea;
+            color: #667eea;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .hero h1 {
+            font-size: 56px;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .hero h1 span { color: #667eea; }
+        .hero p {
+            font-size: 20px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .hero-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-3px); }
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 15px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover { border-color: #667eea; color: #667eea; }
+
+        /* SERVICES */
+        .services {
+            padding: 100px 40px;
+            background: #f8f9fa;
+            text-align: center;
+        }
+        .section-badge {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .services h2 { font-size: 40px; margin-bottom: 15px; }
+        .services p { color: #666; margin-bottom: 60px; font-size: 18px; }
+        .cards { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 300px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+            text-align: left;
+        }
+        .card:hover { transform: translateY(-10px); }
+        .card-icon { font-size: 40px; margin-bottom: 20px; }
+        .card h3 { font-size: 22px; margin-bottom: 10px; }
+        .card p { color: #666; line-height: 1.6; }
+
+        /* PROJETS */
+        .projets {
+            padding: 100px 40px;
+            background: white;
+            text-align: center;
+        }
+        .projets h2 { font-size: 40px; margin-bottom: 15px; }
+        .projets > p { color: #666; margin-bottom: 60px; font-size: 18px; }
+        .projet-cards { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+        .projet-card {
+            background: linear-gradient(135deg, #1a1a3e, #0f0f2e);
+            border-radius: 20px;
+            padding: 40px;
+            width: 340px;
+            color: white;
+            text-align: left;
+        }
+        .projet-tag {
+            background: rgba(102,126,234,0.3);
+            color: #667eea;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .projet-card h3 { font-size: 22px; margin-bottom: 10px; }
+        .projet-card p { color: rgba(255,255,255,0.7); margin-bottom: 20px; line-height: 1.6; }
+        .projet-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* CONTACT */
+        .contact {
+            padding: 100px 40px;
+            background: linear-gradient(135deg, #0a0a1e, #1a1a3e);
+            text-align: center;
+            color: white;
+        }
+        .contact h2 { font-size: 40px; margin-bottom: 15px; }
+        .contact p { color: rgba(255,255,255,0.7); margin-bottom: 40px; font-size: 18px; }
+        .contact-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 16px;
+        }
+        .contact-form textarea { height: 120px; resize: none; }
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder { color: rgba(255,255,255,0.4); }
+
+        /* FOOTER */
+        footer {
+            background: #050510;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 30px;
+        }
+        footer span { color: #667eea; font-weight: bold; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            nav ul { display: none; }
+            .cards, .projet-cards { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">NEX<span>ORA</span></div>
+        <ul>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projets">Projets</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">✨ Développeur Web & Applications</div>
+            <h1>Je transforme vos idées en <span>expériences digitales</span></h1>
+            <p>Sites web modernes, applications sur mesure et solutions digitales pour propulser votre business.</p>
+            <div class="hero-btns">
+                <a href="#projets" class="btn-primary">Voir mes projets</a>
+                <a href="#contact" class="btn-secondary">Me contacter</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="section-badge">CE QUE JE FAIS</div>
+        <h2>Mes Services</h2>
+        <p>Des solutions digitales adaptées à vos besoins</p>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">🌐</div>
+                <h3>Sites Web</h3>
+                <p>Création de sites vitrines modernes, rapides et optimisés pour tous les écrans.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Web Apps</h3>
+                <p>Applications web sur mesure pour automatiser et digitaliser vos processus.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <h3>SEO & Performance</h3>
+                <p>Site rapide, optimisé pour Google et livré avec un score Lighthouse > 90/100.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="projets" id="projets">
+        <div class="section-badge">MES RÉALISATIONS</div>
+        <h2>Projets récents</h2>
+        <p>Des projets concrets qui démontrent mon expertise</p>
+        <div class="projet-cards">
+            <div class="projet-card">
+                <span class="projet-tag">Python · Flask · Web</span>
+                <h3>Password Checker</h3>
+                <p>Application web de cybersécurité qui analyse la force des mots de passe en temps réel.</p>
+                <a href="https://password-checker-lgal.onrender.com" class="projet-link" target="_blank">Voir le projet →</a>
+            </div>
+            <div class="projet-card">
+                <span class="projet-tag">HTML · CSS · JS</span>
+                <h3>Site Vitrine</h3>
+                <p>Site professionnel responsive avec design moderne et animations fluides.</p>
+                <a href="#" class="projet-link">En cours →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="section-badge">TRAVAILLONS ENSEMBLE</div>
+        <h2>Contactez-moi</h2>
+        <p>Un projet en tête ? Parlons-en !</p>
+        <form class="contact-form" action="https://formspree.io/f/VOTRE_ID" method="POST">
+            <input type="text" name="nom" placeholder="Votre nom" required>
+            <input type="email" name="email" placeholder="Votre email" required>
+            <textarea name="message" placeholder="Votre message"></textarea>
+            <button type="submit" class="btn-primary">Envoyer le message</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2026 <span>Nexora</span> — Tous droits réservés</p>
+    </footer>
+
+</body>
+</html>
