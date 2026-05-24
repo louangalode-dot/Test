@@ -300,6 +300,32 @@
         @media (max-width: 600px) {
             .cookie-banner { flex-direction: column; align-items: flex-start; bottom: 16px; }
         }
+
+        /* TEMOIGNAGES */
+        .temoignages-wrapper { background: white; border-top: 1px solid #E8E8E4; border-bottom: 1px solid #E8E8E4; }
+        .temoignages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+        .temoignage-card {
+            background: #F7F7F5; border: 1px solid #E8E8E4;
+            border-radius: 20px; padding: 32px;
+            transition: all 0.3s;
+        }
+        .temoignage-card:hover { border-color: #0066FF; transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,102,255,0.08); }
+        .temoignage-stars { color: #FFB800; font-size: 16px; margin-bottom: 16px; letter-spacing: 2px; }
+        .temoignage-text { font-size: 15px; color: #444; line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+        .temoignage-author { display: flex; align-items: center; gap: 12px; }
+        .temoignage-avatar {
+            width: 44px; height: 44px;
+            background: #0066FF; color: white;
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .temoignage-name { font-size: 14px; font-weight: 700; color: #111; }
+        .temoignage-role { font-size: 12px; color: #888; margin-top: 2px; }
+        @media (max-width: 900px) {
+            .temoignages-grid { grid-template-columns: 1fr; }
+        }
         /* RESPONSIVE */
         @media (max-width: 900px) {
             * { cursor: auto; }
@@ -476,6 +502,50 @@
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 <h3 style="color:#555;font-size:18px;font-weight:700;">Projets en cours</h3>
                 <p>Nouveaux projets à venir — <span style="color:#0066FF;">tarifs de lancement disponibles</span></p>
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <div class="temoignages-wrapper">
+    <section class="section" id="temoignages">
+        <div data-aos="fade-up">
+            <div class="section-label">Ce qu'ils disent</div>
+            <div class="section-title">Témoignages</div>
+        </div>
+        <div class="temoignages-grid" data-aos="fade-up" data-aos-delay="100">
+            <div class="temoignage-card">
+                <div class="temoignage-stars">★★★★★</div>
+                <p class="temoignage-text">"Louan a livré notre site en 3 semaines chrono. Design moderne, rapide et exactement ce qu'on voulait. On recommande les yeux fermés !"</p>
+                <div class="temoignage-author">
+                    <div class="temoignage-avatar">S</div>
+                    <div>
+                        <div class="temoignage-name">Sophie M.</div>
+                        <div class="temoignage-role">Gérante — Boutique en ligne</div>
+                    </div>
+                </div>
+            </div>
+            <div class="temoignage-card">
+                <div class="temoignage-stars">★★★★★</div>
+                <p class="temoignage-text">"Très professionnel, à l'écoute et réactif. Notre site est maintenant visible sur Google et on reçoit des demandes chaque semaine."</p>
+                <div class="temoignage-author">
+                    <div class="temoignage-avatar">T</div>
+                    <div>
+                        <div class="temoignage-name">Thomas L.</div>
+                        <div class="temoignage-role">Fondateur — Startup Tech</div>
+                    </div>
+                </div>
+            </div>
+            <div class="temoignage-card">
+                <div class="temoignage-stars">★★★★★</div>
+                <p class="temoignage-text">"Rapport qualité-prix imbattable. Louan a su comprendre nos besoins dès le premier appel et le résultat dépasse nos attentes."</p>
+                <div class="temoignage-author">
+                    <div class="temoignage-avatar">A</div>
+                    <div>
+                        <div class="temoignage-name">Amina K.</div>
+                        <div class="temoignage-role">Directrice — Cabinet Conseil</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
