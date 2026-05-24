@@ -29,7 +29,7 @@
         nav ul a:hover { color: #667eea; }
 
         /* HERO */
-        .hero {
+        .hero { position: relative; overflow: hidden; 
             min-height: 100vh;
             background: linear-gradient(135deg, #0a0a1e 0%, #1a1a3e 50%, #0f0f2e 100%);
             display: flex;
@@ -194,6 +194,7 @@
             .cards, .projet-cards { flex-direction: column; align-items: center; }
         }
     </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
 
@@ -207,9 +208,10 @@
     </nav>
 
     <section class="hero">
-        <div class="hero-content">
+        <canvas id="particles"></canvas>
+    <div class="hero-content" style="position:relative;z-index:2;" data-aos="fade-up" data-aos-delay="200">
             <div class="hero-badge">✨ Développeur Web & Applications</div>
-            <h1>Je transforme vos idées en <span>expériences digitales</span></h1>
+            <h1>Je transforme vos idées en <span id="typed"></span></h1>
             <p>Sites web modernes, applications sur mesure et solutions digitales pour propulser votre business.</p>
             <div class="hero-btns">
                 <a href="#projets" class="btn-primary">Voir mes projets</a>
@@ -222,7 +224,7 @@
         <div class="section-badge">CE QUE JE FAIS</div>
         <h2>Mes Services</h2>
         <p>Des solutions digitales adaptées à vos besoins</p>
-        <div class="cards">
+        <div class="cards" data-aos="fade-up">
             <div class="card">
                 <div class="card-icon">🌐</div>
                 <h3>Sites Web</h3>
@@ -245,7 +247,7 @@
         <div class="section-badge">MES RÉALISATIONS</div>
         <h2>Projets récents</h2>
         <p>Des projets concrets qui démontrent mon expertise</p>
-        <div class="projet-cards">
+        <div class="projet-cards" data-aos="fade-up">
             <div class="projet-card">
                 <span class="projet-tag">Python · Flask · Web</span>
                 <h3>Password Checker</h3>
@@ -277,5 +279,87 @@
         <p>© 2026 <span>Nexora</span> — Tous droits réservés</p>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ duration: 800, once: true });
+
+        // PARTICULES
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.style.position = 'absolute';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+
+        let particles = [];
+        function resize() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        for (let i = 0; i < 80; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                r: Math.random() * 2 + 1
+            });
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(102,126,234,0.5)';
+                ctx.fill();
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            });
+            requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+
+        // EFFET DE FRAPPE
+        const words = ['expériences digitales', 'sites web modernes', 'web applications', 'votre vision'];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typedEl = document.getElementById('typed');
+
+        function type() {
+            const word = words[wordIndex];
+            if (isDeleting) {
+                typedEl.textContent = word.substring(0, charIndex--);
+            } else {
+                typedEl.textContent = word.substring(0, charIndex++);
+            }
+            typedEl.style.color = '#667eea';
+            typedEl.style.borderRight = '3px solid #667eea';
+
+            if (!isDeleting && charIndex === word.length + 1) {
+                setTimeout(() => isDeleting = true, 1500);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+            }
+            setTimeout(type, isDeleting ? 50 : 100);
+        }
+        type();
+
+        // NAV ACTIVE AU SCROLL
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(10,10,30,0.98)';
+            } else {
+                nav.style.background = 'rgba(10,10,30,0.95)';
+            }
+        });</script>
 </body>
 </html>
