@@ -250,6 +250,56 @@
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; padding: 0 24px; }
         .faq-answer-inner { padding-bottom: 20px; font-size: 14px; color: #666; line-height: 1.7; border-top: 1px solid #F0F0EC; padding-top: 16px; }
         .faq-item.open .faq-answer { max-height: 300px; }
+
+        /* COOKIE BANNER */
+        .cookie-banner {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 9997;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            max-width: 680px;
+            width: calc(100% - 48px);
+            font-size: 14px;
+            transition: all 0.4s ease;
+        }
+        .cookie-banner.hidden {
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+            pointer-events: none;
+        }
+        .cookie-banner p { color: #aaa; line-height: 1.5; flex: 1; }
+        .cookie-banner p a { color: white; text-decoration: underline; }
+        .cookie-btns { display: flex; gap: 8px; flex-shrink: 0; }
+        .cookie-accept {
+            background: #0066FF; color: white;
+            border: none; padding: 10px 20px;
+            border-radius: 100px; font-size: 13px;
+            font-weight: 600; cursor: none;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+        }
+        .cookie-accept:hover { background: #0052cc; }
+        .cookie-decline {
+            background: transparent; color: #666;
+            border: 1px solid #333; padding: 10px 20px;
+            border-radius: 100px; font-size: 13px;
+            font-weight: 600; cursor: none;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+        .cookie-decline:hover { border-color: #666; color: #aaa; }
+        @media (max-width: 600px) {
+            .cookie-banner { flex-direction: column; align-items: flex-start; bottom: 16px; }
+        }
         /* RESPONSIVE */
         @media (max-width: 900px) {
             * { cursor: auto; }
@@ -543,6 +593,19 @@
                 if (!isOpen) item.classList.add('open');
             });
         });
+
+        // COOKIE BANNER
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookieBanner').classList.add('hidden');
+        }
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            document.getElementById('cookieBanner').classList.add('hidden');
+        }
+        if (localStorage.getItem('cookieConsent')) {
+            document.getElementById('cookieBanner').classList.add('hidden');
+        }
     </script>
     <!-- BOUTON WHATSAPP FLOTTANT -->
     <a href="https://wa.me/32469233980" target="_blank" class="whatsapp-btn" title="Contactez-moi sur WhatsApp">
@@ -573,5 +636,14 @@
             box-shadow: 0 6px 25px rgba(37,211,102,0.5);
         }
     </style>
+
+    <!-- COOKIE BANNER -->
+    <div class="cookie-banner" id="cookieBanner">
+        <p>🍪 Ce site utilise des cookies pour améliorer votre expérience. En continuant, vous acceptez notre <a href="#">politique de confidentialité</a>.</p>
+        <div class="cookie-btns">
+            <button class="cookie-decline" onclick="declineCookies()">Refuser</button>
+            <button class="cookie-accept" onclick="acceptCookies()">Accepter</button>
+        </div>
+    </div>
 </body>
 </html>
